@@ -1,20 +1,23 @@
-using Microsoft.AspNetCore.Authentication;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
 using MyFinances.Database.Context;
-using MyFinances.Server.Models;
+using MyFinances.UI.Areas.Identity;
+using MyFinances.UI.Data;
 
-namespace MyFinances.Server
+namespace MyFinances.UI
 {
     public class Startup
     {
@@ -32,18 +35,12 @@ namespace MyFinances.Server
             services.AddDbContext<MyFinancesContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("SqlServerConnection")));
-
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<MyFinancesContext>();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, MyFinancesContext>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
-
-            services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddServerSideBlazor();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddSingleton<WeatherForecastService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +50,6 @@ namespace MyFinances.Server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                app.UseWebAssemblyDebugging();
             }
             else
             {
@@ -63,20 +59,18 @@ namespace MyFinances.Server
             }
 
             app.UseHttpsRedirection();
-            app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseIdentityServer();
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllers();
-                endpoints.MapFallbackToFile("index.html");
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }
