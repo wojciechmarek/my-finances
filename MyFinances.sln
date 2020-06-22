@@ -9,11 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8FEB08F8-C6B5-443E-9B3E-15D59DBA6FF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.Database", "MyFinances.Database\MyFinances.Database.csproj", "{682C5170-AC9C-4252-BB1E-D613602CEF37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFinances.Database", "MyFinances.Database\MyFinances.Database.csproj", "{682C5170-AC9C-4252-BB1E-D613602CEF37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.Stock", "MyFinances.Stock\MyFinances.Stock.csproj", "{8B981388-D79F-4988-9069-E2EF96E3FC3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFinances.Stock", "MyFinances.Stock\MyFinances.Stock.csproj", "{8B981388-D79F-4988-9069-E2EF96E3FC3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.UI", "MyFinances.UI\MyFinances.UI.csproj", "{5D257289-52EF-4E4B-B10B-F8FAC27E1C5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFinances.UI", "MyFinances.UI\MyFinances.UI.csproj", "{5D257289-52EF-4E4B-B10B-F8FAC27E1C5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.Common", "MyFinances.Common\MyFinances.Common.csproj", "{8F58CBA0-D282-4197-9889-D9047A623129}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{5D257289-52EF-4E4B-B10B-F8FAC27E1C5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D257289-52EF-4E4B-B10B-F8FAC27E1C5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D257289-52EF-4E4B-B10B-F8FAC27E1C5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F58CBA0-D282-4197-9889-D9047A623129}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F58CBA0-D282-4197-9889-D9047A623129}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F58CBA0-D282-4197-9889-D9047A623129}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F58CBA0-D282-4197-9889-D9047A623129}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +47,7 @@ Global
 		{682C5170-AC9C-4252-BB1E-D613602CEF37} = {C135223F-FEAE-4112-85B5-48214BEBF66A}
 		{8B981388-D79F-4988-9069-E2EF96E3FC3D} = {C135223F-FEAE-4112-85B5-48214BEBF66A}
 		{5D257289-52EF-4E4B-B10B-F8FAC27E1C5F} = {4E5D42D3-126C-4737-A4EC-FF5CF844C605}
+		{8F58CBA0-D282-4197-9889-D9047A623129} = {8FEB08F8-C6B5-443E-9B3E-15D59DBA6FF7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66CBE11F-CA29-4311-8D0D-FDE789435F6A}
