@@ -1,0 +1,82 @@
+﻿@page "/search"
+@using MyFinances.Common.Models.Stock
+
+<h1>Search</h1>
+
+<div class="mat-elevation-z5 p-3">
+    <div class="d-flex">
+        <div class="flex-fill m-1">
+            <MatTextField @bind-Value="@SearchValue" Label="Stock symbol" FullWidth="true"></MatTextField>
+        </div>
+        <div class="m-1">
+            <MatButton Raised="true" Class="m-3">Search</MatButton>
+        </div>
+    </div>
+</div>
+<div class="mat-elevation-z5 mt-5 p-3">
+    @if ((stocks.Count) > 0)
+    {
+        <h4 class="mt-2">Results:</h4>
+        <MatTable Items="@stocks" class="mat-elevation-z5">
+            <MatTableHeader>
+                <th>Symbol</th>
+                <th style="width: 90%;">Name</th>
+                <th>Last price</th>
+                <th>Details</th>
+                <th>Favorite</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Symbol</td>
+                <td>@context.Name</td>
+                <td>@String.Format("${0:f2}", @context.LastPrice)</td>
+                <td><MatButton Raised="true" Class="m-3" OnClick="ShowDetails">Show</MatButton></td>
+                <td>
+                    @if (context.IsFavorite)
+                    {
+                        <MatButton Icon="favorite" OnClick="() => {context.IsFavorite = false;}"></MatButton>
+                    }
+                    else
+                    {
+                        <MatButton Icon="favorite_border" OnClick="() => {context.IsFavorite = true;}"></MatButton>
+                    }
+                </td>
+            </MatTableRow>
+        </MatTable>
+    }
+    else
+    {
+        <h4>No results yet</h4>
+    }
+</div>
+<AssetDetails IsOpen=@dialogIsOpen></AssetDetails>
+
+@code {
+    bool dialogIsOpen = false;
+
+    private List<Stock> stocks { get; set; } = new List<Stock>()
+    {
+        new Stock() {IsFavorite = false, Name = "Google", Symbol = "GOOG", LastPrice = 23.43m},
+        new Stock() {IsFavorite = false, Name = "Allpe", Symbol = "GOOG", LastPrice = 23.43m},
+        new Stock() {IsFavorite = false, Name = "Orzech", Symbol = "GOOG", LastPrice = 23.43m},
+        new Stock() {IsFavorite = false, Name = "Koltex", Symbol = "GOOG", LastPrice = 23.43m},
+        new Stock() {IsFavorite = false, Name = "Spacex", Symbol = "GOOG", LastPrice = 23.43m},
+        new Stock() {IsFavorite = false, Name = "Fabrity", Symbol = "GOOG", LastPrice = 23.43m},
+        new Stock() {IsFavorite = false, Name = "K2", Symbol = "GOOG", LastPrice = 23.43m},
+        new Stock() {IsFavorite = false, Name = "Ideo", Symbol = "GOOG", LastPrice = 23.43m},
+    };
+
+
+    private string SearchValue { get; set; }
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private void ShowDetails()
+    {
+        dialogIsOpen = true;
+    }
+
+}

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFinances.Stock", "MyFinan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFinances.UI", "MyFinances.UI\MyFinances.UI.csproj", "{5D257289-52EF-4E4B-B10B-F8FAC27E1C5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFinances.Common", "MyFinances.Common\MyFinances.Common.csproj", "{8F58CBA0-D282-4197-9889-D9047A623129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFinances.Common", "MyFinances.Common\MyFinances.Common.csproj", "{8F58CBA0-D282-4197-9889-D9047A623129}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

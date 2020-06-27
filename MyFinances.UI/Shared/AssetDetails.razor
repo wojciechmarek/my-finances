@@ -1,0 +1,23 @@
+﻿@using IdentityServer4.Events
+<div>
+    <MatDialog @bind-IsOpen="@IsOpen">
+        <MatDialogTitle>Apple</MatDialogTitle>
+        <MatDialogContent>
+            <p>asdasdasdasd</p>
+        </MatDialogContent>
+        <MatDialogActions>
+            <MatButton OnClick="OkPressed">OK</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</div>
+
+@code {
+
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    private void OkPressed()
+    {
+        IsOpen = false;
+    }
+}
