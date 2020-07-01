@@ -1,9 +1,15 @@
-﻿@using IdentityServer4.Events
+﻿@using MyFinances.UI.Data
+@using MyFinances.Common.Models.UI
+
 <div>
     <MatDialog @bind-IsOpen="@IsOpen">
-        <MatDialogTitle>Apple</MatDialogTitle>
-        <MatDialogContent>
-            <p>asdasdasdasd</p>
+        <MatDialogTitle>@Name</MatDialogTitle>
+        <MatDialogContent Style="width: 560px; height: 260px;">
+            @foreach (var price in Prices)
+            {
+                <p>@price.Time.ToShortTimeString(): <b>@price.Price.ToString()</b></p>
+            }
+            
         </MatDialogContent>
         <MatDialogActions>
             <MatButton OnClick="OkPressed">OK</MatButton>
@@ -12,9 +18,14 @@
 </div>
 
 @code {
-
     [Parameter]
     public bool IsOpen { get; set; }
+
+    [Parameter]
+    public string Name { get; set; }
+
+    [Parameter]
+    public List<UIStock> Prices { get; set; }
 
     private void OkPressed()
     {

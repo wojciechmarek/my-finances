@@ -2,6 +2,7 @@
 
 @using MyFinances.UI.Data
 @using MyFinances.Common.Models.Stock
+@using MyFinances.Common.Models.UI
 @using MyFinances.UI.Shared
 @inject WeatherForecastService ForecastService
 
@@ -33,15 +34,22 @@
         <h4>...is already empty.</h4>
     }
 </div>
-<AssetDetails IsOpen=@dialogIsOpen></AssetDetails>
+<AssetDetails IsOpen=@dialogIsOpen Prices="@prices" Name="@name"></AssetDetails>
 
 
 @code {
 
     bool dialogIsOpen = false;
+    string name = "Allegro";
+    List<UIStock> prices = new List<UIStock>()
+{
+        new UIStock(DateTime.Now, 5.45m),
+        new UIStock(DateTime.Now.AddHours(-1), 5.76m),
+        new UIStock(DateTime.Now.AddHours(-2), 5.89m),
+};
 
     private List<Stock> stocks { get; set; } = new List<Stock>()
-    {
+{
         new Stock() {IsFavorite = false, Name = "Google", Symbol = "GOOG", LastPrice = 23.43m},
         new Stock() {IsFavorite = false, Name = "Allpe", Symbol = "GOOG", LastPrice = 23.43m},
         new Stock() {IsFavorite = false, Name = "Orzech", Symbol = "GOOG", LastPrice = 23.43m},
@@ -52,12 +60,7 @@
         new Stock() {IsFavorite = false, Name = "Ideo", Symbol = "GOOG", LastPrice = 23.43m},
     };
 
-    private WeatherForecast[] forecasts;
 
-    protected override async Task OnInitializedAsync()
-    {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
-    }
 
     private void RemoveFromFav(Stock stock)
     {
