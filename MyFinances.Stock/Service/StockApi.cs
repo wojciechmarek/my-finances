@@ -40,9 +40,9 @@ namespace MyFinances.Stock.Service
             };
         }
 
-        public IList<Common.Models.Stock.Stock> SearchStock(string symbolOrName)
+        public IList<StockModel> SearchStock(string symbolOrName)
         {
-            IList<Common.Models.Stock.Stock> resultStocks = new List<Common.Models.Stock.Stock>();
+            IList<StockModel> resultStocks = new List<StockModel>();
            
 
             var resultQuery = _prices
@@ -55,28 +55,23 @@ namespace MyFinances.Stock.Service
                 var minPrice = stock.Price - 1;
                 var maxPrice = stock.Price + 1;
 
-                resultStocks.Add(new Common.Models.Stock.Stock()
-                {
-                    Name = stock.Name,
-                    Symbol = stock.Symbol,
-                    LastPrice = (decimal)GenerateFakePrice(stock.Price)
-                });
+                resultStocks.Add(new StockModel(stock.Name, stock.Symbol, GenerateFakePrice(stock.Price)));
             }
 
             return resultStocks;
         }
 
-        public Common.Models.Stock.StockHistory StockInfo(string symbol)
+        public StockHistoryModel StockInfo(string symbol)
         {
             var resultQuery = _prices.FirstOrDefault(x => x.Symbol.Contains(symbol));
 
             if (resultQuery == null) throw new StockNotFoundException();
 
-            return new StockHistory()
+            return new StockHistoryModel()
             {
                 Name = resultQuery.Name,
                 Symbol = resultQuery.Symbol,
-                Price = new List<decimal>()
+                Prices = new List<decimal>()
                 {
                     (decimal) GenerateFakePrice(resultQuery.Price),
                     (decimal) GenerateFakePrice(resultQuery.Price),
