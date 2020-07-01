@@ -77,7 +77,7 @@ namespace MyFinances.Stock.Service
 
         public StockHistoryModel StockInfo(string symbol)
         {
-            var resultQuery = _prices.FirstOrDefault(x => x.Symbol.Contains(symbol));
+            var resultQuery = _prices.SingleOrDefault(x => x.Symbol.Contains(symbol));
 
             if (resultQuery == null) throw new StockNotFoundException();
 

@@ -1,25 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
+using IdentityServer4.Extensions;
+using MyFinances.Database.Context;
 using MyFinances.Database.Facades;
+using Microsoft.AspNetCore.Http;
+using MyFinances.Common.Exceptions;
+using MyFinances.Database.Models;
 
 namespace MyFinances.Database.Services
 {
     public class ProfileServices : IProfileFcd
     {
-        public void AddFavouriteAsset(int userId, int assetId)
+        private readonly MyFinancesContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private string userIdentifier;
+
+        public ProfileServices(MyFinancesContext context, IHttpContextAccessor httpContextAccessor)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+            userIdentifier = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
-        public void RemoveFavouriteAsset(int userId, int assetId)
-        {
-            throw new NotImplementedException();
+        public void AddFavoriteAsset(string assetIdentifier)
+        { 
+           if (assetIdentifier.IsNullOrEmpty()) throw new FavouriteAssetException();
+
+           var newAsset = new FavoriteAsset()
+           {
+               AssetId = assetIdentifier,
+               UserId = userIdentifier,
+           };
+
+           _context.FavoriteAssets.Add(newAsset);
+           _context.SaveChanges();
         }
 
-        public IEnumerable<int> GetFavoritiesAssets(int userId)
+        public void RemoveFavouriteAsset(string assetIdentifier)
         {
-            throw new NotImplementedException();
+            if (assetIdentifier.IsNullOrEmpty()) throw new FavouriteAssetException();
+
+            var resultToRemove = _context.FavoriteAssets
+                .Single(x => x.AssetId == assetIdentifier && x.UserId == userIdentifier);
+
+            _context.FavoriteAssets.Remove(resultToRemove);
+        }
+
+        public IList<FavoriteAsset> GetFavoritiesAssets()
+        {
+            var result = _context.FavoriteAssets
+                .Where(x => x.UserId == userIdentifier).ToList();
+
+            return result;
         }
     }
 }

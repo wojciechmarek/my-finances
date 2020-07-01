@@ -12,6 +12,6 @@ namespace MyFinances.Database.Context
         {
         }
 
-        public DbSet<FavorityAsset> FavorityAssets { get; set; }
+        public DbSet<FavoriteAsset> FavoriteAssets { get; set; }
     }
 }

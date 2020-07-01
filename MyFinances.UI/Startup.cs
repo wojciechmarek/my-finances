@@ -9,12 +9,17 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyFinances.Database.Context;
+using MyFinances.Database.Facades;
+using MyFinances.Database.Services;
+using MyFinances.Stock.Adapter;
+using MyFinances.Stock.Service;
 using MyFinances.UI.Areas.Identity;
 using MyFinances.UI.Data;
 
@@ -42,6 +47,14 @@ namespace MyFinances.UI
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddSingleton<WeatherForecastService>();
+            
+            // DI
+            services.AddSingleton<StockApi>();
+            services.AddSingleton<IStockAdapter, StockAdapter>();
+            services.AddSingleton<IProfileFcd, ProfileServices>();
+
+            // Helpers
+            services.AddHttpContextAccessor();
 
             if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
             {

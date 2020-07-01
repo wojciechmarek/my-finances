@@ -219,7 +219,7 @@ namespace MyFinances.Database.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MyFinances.Database.Models.FavorityAsset", b =>
+            modelBuilder.Entity("MyFinances.Database.Models.FavoriteAsset", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

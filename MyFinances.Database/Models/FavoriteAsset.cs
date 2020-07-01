@@ -5,11 +5,11 @@ using System.Text;
 
 namespace MyFinances.Database.Models
 {
-    public class FavorityAsset
+    public class FavoriteAsset
     {
         [Key]
         public int Id { get; set; }
-        public int UserId { get; set; }
-        public int AssetId { get; set; }
+        public string UserId { get; set; }
+        public string AssetId { get; set; }
     }
 }

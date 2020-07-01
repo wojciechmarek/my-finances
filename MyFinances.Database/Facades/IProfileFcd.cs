@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MyFinances.Database.Models;
 
 namespace MyFinances.Database.Facades
 {
     public interface IProfileFcd
     {
-        void AddFavouriteAsset(int userId, int assetId);
-        void RemoveFavouriteAsset(int userId, int assetId);
-        IEnumerable<int> GetFavoritiesAssets(int userId);
+        void AddFavoriteAsset(string assetIdentifier);
+        void RemoveFavouriteAsset(string assetIdentifier);
+        IList<FavoriteAsset> GetFavoritiesAssets();
     }
 }
