@@ -13,7 +13,7 @@ namespace MyFinances.Stock.Service
     {
         private IList<StockModel> _prices;
 
-        public object ReturnListOfStocks()
+        public StockApi()
         {
             _prices = new List<StockModel>()
             {
@@ -38,6 +38,20 @@ namespace MyFinances.Stock.Service
                 new StockModel("Santander", "SPL", 175),
                 new StockModel("Tauron", "TPE", 2),
             };
+        }
+
+        public IList<StockModel> GetAll()
+        {
+            IList<StockModel> resultStocks = new List<StockModel>();
+
+            var resultQuery = _prices.ToList();
+
+            foreach (var stock in resultQuery)
+            {
+                resultStocks.Add(new StockModel(stock.Name, stock.Symbol, GenerateFakePrice(stock.Price)));
+            }
+
+            return resultStocks;
         }
 
         public IList<StockModel> SearchStock(string symbolOrName)

@@ -7,7 +7,8 @@ namespace MyFinances.Stock.Adapter
 {
     public interface IStockAdapter
     {
-        IEnumerable<Common.Models.Stock.Stock> GetStocks();
+        IList<Common.Models.Stock.Stock> GetStocks();
+        IList<Common.Models.Stock.Stock> SearchStock(string nameOrSymbol);
         StockHistory GetStockHistory(string symbol);
     }
 }
