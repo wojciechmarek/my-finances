@@ -22,7 +22,7 @@ namespace MyFinances.Database.Services
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
-            userIdentifier = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            userIdentifier =_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
         public void AddFavoriteAsset(string assetIdentifier)

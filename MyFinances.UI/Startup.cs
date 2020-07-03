@@ -14,7 +14,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using MyFinances.Database.Command;
 using MyFinances.Database.Context;
 using MyFinances.Database.Facades;
 using MyFinances.Database.Services;
@@ -50,11 +52,13 @@ namespace MyFinances.UI
             
             // DI
             services.AddSingleton<StockApi>();
-            services.AddSingleton<IStockAdapter, StockAdapter>();
-            services.AddSingleton<IProfileFcd, ProfileServices>();
+            services.AddScoped<ProfileServicesReceiver>();
+            services.AddScoped<ProfileServicesInvoker>();
+            services.AddScoped<IStockAdapter, StockAdapter>();
+            services.AddScoped<IProfileFcd, ProfileServices>();
 
             // Helpers
-            services.AddHttpContextAccessor();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
             {

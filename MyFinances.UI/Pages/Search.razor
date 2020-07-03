@@ -1,5 +1,14 @@
 ﻿@page "/search"
 @using MyFinances.Common.Models.Stock
+@using MyFinances.Database.Command
+@using MyFinances.Stock.Adapter
+@using MyFinances.Common.Command.Commands
+@using MyFinances.Database.Command.Commands
+@using MyFinances.Database.Facades
+@inject IStockAdapter StockAdapter
+@inject IProfileFcd ProfileFacade 
+@inject ProfileServicesInvoker ProfileServicesInvoker
+@inject ProfileServicesReceiver ProfileServicesReceiver
 
 <h1>Search</h1>
 
@@ -20,24 +29,24 @@
         <MatTable Items="@stocks" class="mat-elevation-z5">
             <MatTableHeader>
                 <th>Symbol</th>
-                <th style="width: 90%;">Name</th>
-                <th>Last price</th>
+                <th style="width: 80%;">Name</th>
+                <th style="width: 10%;">Last price</th>
                 <th>Details</th>
                 <th>Favorite</th>
             </MatTableHeader>
             <MatTableRow>
                 <td>@context.Symbol</td>
                 <td>@context.Name</td>
-                <td>@String.Format("${0:f2}", @context.LastPrice)</td>
+                <td>@String.Format("{0:f2} zł", @context.LastPrice)</td>
                 <td><MatButton Raised="true" Class="m-3" OnClick="ShowDetails">Show</MatButton></td>
                 <td>
                     @if (context.IsFavorite)
                     {
-                        <MatButton Icon="favorite" OnClick="() => {context.IsFavorite = false;}"></MatButton>
+                        <MatButton Icon="favorite" OnClick="_ => FavoriteClicked(context)"></MatButton>
                     }
                     else
                     {
-                        <MatButton Icon="favorite_border" OnClick="() => {context.IsFavorite = true;}"></MatButton>
+                        <MatButton Icon="favorite_border" OnClick="_ =>FavoriteClicked(context)"></MatButton>
                     }
                 </td>
             </MatTableRow>
@@ -48,22 +57,50 @@
         <h4>No results yet</h4>
     }
 </div>
-<AssetDetails IsOpen=@dialogIsOpen></AssetDetails>
+@*<AssetDetails IsOpen=@dialogIsOpen></AssetDetails>*@
 
 @code {
     bool dialogIsOpen = false;
+    ProfileServicesReceiver receiver;
+    private List<Stock> stocks { get; set; }
 
-    private List<Stock> stocks { get; set; } = new List<Stock>()
+    protected override void OnInitialized()
     {
-        new Stock() {IsFavorite = false, Name = "Google", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Allpe", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Orzech", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Koltex", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Spacex", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Fabrity", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "K2", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Ideo", Symbol = "GOOG", LastPrice = 23.43m},
-    };
+        UpdateStockList();
+    }
+
+    private void UpdateStockList()
+    {
+        stocks = StockAdapter.GetStocks().ToList();
+    }
+
+    private void FavoriteClicked(Stock stock)
+    {
+        if (stock.IsFavorite)
+        {
+            ProfileServicesInvoker.SetCommand(new RemoveFromFavority(ProfileServicesReceiver, stock.Symbol));
+            ProfileServicesInvoker.RemoveAssetFromUserFavorities();
+        }
+        else
+        {
+            ProfileServicesInvoker.SetCommand(new AddToFavorite(ProfileServicesReceiver, stock.Symbol));
+            ProfileServicesInvoker.AddAssetToUserFavorities();
+        }
+
+        UpdateStockList();
+    }
+
+    //private List<Stock> stocks { get; set; } = new List<Stock>()
+    //{
+    //    new Stock() {IsFavorite = false, Name = "Google", Symbol = "GOOG", LastPrice = 23.43m},
+    //    new Stock() {IsFavorite = false, Name = "Allpe", Symbol = "GOOG", LastPrice = 23.43m},
+    //    new Stock() {IsFavorite = false, Name = "Orzech", Symbol = "GOOG", LastPrice = 23.43m},
+    //    new Stock() {IsFavorite = false, Name = "Koltex", Symbol = "GOOG", LastPrice = 23.43m},
+    //    new Stock() {IsFavorite = false, Name = "Spacex", Symbol = "GOOG", LastPrice = 23.43m},
+    //    new Stock() {IsFavorite = false, Name = "Fabrity", Symbol = "GOOG", LastPrice = 23.43m},
+    //    new Stock() {IsFavorite = false, Name = "K2", Symbol = "GOOG", LastPrice = 23.43m},
+    //    new Stock() {IsFavorite = false, Name = "Ideo", Symbol = "GOOG", LastPrice = 23.43m},
+    //};
 
 
     private string SearchValue { get; set; }

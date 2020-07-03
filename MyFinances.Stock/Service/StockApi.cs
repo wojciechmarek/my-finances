@@ -103,7 +103,7 @@ namespace MyFinances.Stock.Service
             var minPrice = price - 1;
             var maxPrice = price + 1;
 
-            return random.NextDouble() * (maxPrice - minPrice) + minPrice);
+            return random.NextDouble() * ((maxPrice - minPrice) + minPrice);
         }
     }
 }
