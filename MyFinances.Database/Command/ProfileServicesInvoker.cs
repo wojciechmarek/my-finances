@@ -15,15 +15,7 @@ namespace MyFinances.Database.Command
             _command = command;
         }
 
-        public void AddAssetToUserFavorities()
-        {
-            if (_command is ICommand)
-            {
-                _command.Execute();
-            }
-        }
-
-        public void RemoveAssetFromUserFavorities()
+        public void Execute()
         {
             if (_command is ICommand)
             {

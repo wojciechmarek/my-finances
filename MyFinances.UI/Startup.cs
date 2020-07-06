@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using MyFinances.Common.State;
 using MyFinances.Database.Command;
 using MyFinances.Database.Context;
 using MyFinances.Database.Facades;
@@ -48,12 +49,12 @@ namespace MyFinances.UI
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-            services.AddSingleton<WeatherForecastService>();
-            
+
             // DI
             services.AddSingleton<StockApi>();
             services.AddScoped<ProfileServicesReceiver>();
             services.AddScoped<ProfileServicesInvoker>();
+            services.AddScoped<StockHistoryContext>();
             services.AddScoped<IStockAdapter, StockAdapter>();
             services.AddScoped<IProfileFcd, ProfileServices>();
 

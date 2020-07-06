@@ -47,12 +47,13 @@ namespace MyFinances.Database.Services
                 .Single(x => x.AssetId == assetIdentifier && x.UserId == userIdentifier);
 
             _context.FavoriteAssets.Remove(resultToRemove);
+            _context.SaveChanges();
         }
 
-        public IList<FavoriteAsset> GetFavoritiesAssets()
+        public IList<string> GetFavoritiesAssets()
         {
             var result = _context.FavoriteAssets
-                .Where(x => x.UserId == userIdentifier).ToList();
+                .Where(x => x.UserId == userIdentifier).Select(x=>x.AssetId).ToList();
 
             return result;
         }

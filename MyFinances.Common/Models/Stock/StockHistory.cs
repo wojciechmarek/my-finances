@@ -6,6 +6,7 @@ namespace MyFinances.Common.Models.Stock
     {
         public string Symbol { get; set; }
         public string Name { get; set; }
+        public string Interval { get; set; }
         public IList<decimal> Prices { get; set; }
     }
 }

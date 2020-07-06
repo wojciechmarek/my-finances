@@ -9,6 +9,6 @@ namespace MyFinances.Database.Facades
     {
         void AddFavoriteAsset(string assetIdentifier);
         void RemoveFavouriteAsset(string assetIdentifier);
-        IList<FavoriteAsset> GetFavoritiesAssets();
+        IList<string> GetFavoritiesAssets();
     }
 }

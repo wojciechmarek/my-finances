@@ -1,10 +1,18 @@
 ﻿@page "/favlist"
+@attribute [Authorize]
+@inject IStockAdapter StockAdapter
+@inject IProfileFcd ProfileFacade
+@inject ProfileServicesInvoker ProfileServicesInvoker
+@inject ProfileServicesReceiver ProfileServicesReceiver
 
-@using MyFinances.UI.Data
 @using MyFinances.Common.Models.Stock
 @using MyFinances.Common.Models.UI
+@using MyFinances.Database.Command
+@using MyFinances.Database.Command.Commands
+@using MyFinances.Database.Facades
+@using MyFinances.Stock.Adapter
 @using MyFinances.UI.Shared
-@inject WeatherForecastService ForecastService
+@using MyFinances.Common.Command.Commands
 
 <h1>Your favorite stocks list</h1>
 
@@ -24,7 +32,7 @@
                 <td>@context.Symbol</td>
                 <td>@context.Name</td>
                 <td>@String.Format("${0:f2}", @context.LastPrice)</td>
-                <td><MatButton Raised="true" Class="m-3" OnClick="() => dialogIsOpen = true">Show</MatButton></td>
+                <td><MatButton Raised="true" Class="m-3" OnClick="() => ShowStockDetails(context.Symbol)">Show</MatButton></td>
                 <td><MatButton Raised="true" Class="m-3" OnClick="() => RemoveFromFav(context)">Remove</MatButton></td>
             </MatTableRow>
         </MatTable>
@@ -34,37 +42,53 @@
         <h4>...is already empty.</h4>
     }
 </div>
-<AssetDetails IsOpen=@dialogIsOpen Prices="@prices" Name="@name"></AssetDetails>
+<AssetDetails IsOpen=@infoDialogIsOpen OnOkClickDetails=@OnOkClickDetails Symbol=@stockSymbol></AssetDetails>
 
 
 @code {
 
-    bool dialogIsOpen = false;
-    string name = "Allegro";
-    List<UIStock> prices = new List<UIStock>()
-{
-        new UIStock(DateTime.Now, 5.45m),
-        new UIStock(DateTime.Now.AddHours(-1), 5.76m),
-        new UIStock(DateTime.Now.AddHours(-2), 5.89m),
-};
+    bool infoDialogIsOpen = false;
+    string stockSymbol = string.Empty;
 
-    private List<Stock> stocks { get; set; } = new List<Stock>()
-{
-        new Stock() {IsFavorite = false, Name = "Google", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Allpe", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Orzech", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Koltex", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Spacex", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Fabrity", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "K2", Symbol = "GOOG", LastPrice = 23.43m},
-        new Stock() {IsFavorite = false, Name = "Ideo", Symbol = "GOOG", LastPrice = 23.43m},
-    };
+    private List<Stock> stocks { get; set; }
 
+    protected override void OnInitialized()
+    {
+        UpdateStockList();
+    }
 
+    private void UpdateStockList()
+    {
+        stocks = StockAdapter.GetStocks().ToList();
+
+        var userFavorities = ProfileFacade.GetFavoritiesAssets();
+
+        foreach (var stock in stocks)
+        {
+            var isFavByUser = userFavorities.Contains(stock.Symbol);
+            stock.IsFavorite = isFavByUser;
+        }
+
+        stocks = stocks.Where(x => x.IsFavorite == true).ToList();
+    }
 
     private void RemoveFromFav(Stock stock)
     {
-        stocks.Remove(stock);
+        ProfileServicesInvoker.SetCommand(new RemoveFromFavority(ProfileServicesReceiver, stock.Symbol));
+        ProfileServicesInvoker.Execute();
+
+        UpdateStockList();
+    }
+
+    private void ShowStockDetails(string symbol)
+    {
+        stockSymbol = symbol;
+        infoDialogIsOpen = true;
+    }
+
+    private void OnOkClickDetails()
+    {
+        infoDialogIsOpen = false;
     }
 
 }

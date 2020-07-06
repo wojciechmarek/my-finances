@@ -1,0 +1,21 @@
+﻿@using MyFinances.UI.Data
+@using MyFinances.Common.Models.UI
+@using Autofac.Core
+
+<div>
+    <MatDialog @bind-IsOpen="@IsOpen">
+        <MatDialogTitle>Alert</MatDialogTitle>
+        <p class="align-content-center">Login to continue</p>
+        <MatDialogActions>
+            <MatButton OnClick="OnOkClick">OK</MatButton>
+        </MatDialogActions>
+    </MatDialog>
+</div>
+
+@code {
+    [Parameter]
+    public bool IsOpen { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnOkClick { get; set; }
+}
