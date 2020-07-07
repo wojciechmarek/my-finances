@@ -6,11 +6,12 @@
 @using MyFinances.Database.Command.Commands
 @using MyFinances.Database.Facades
 @using Microsoft.AspNetCore.Http
+@using MyFinances.Database.UserInfo
 @inject IStockAdapter StockAdapter
 @inject IProfileFcd ProfileFacade
 @inject ProfileServicesInvoker ProfileServicesInvoker
 @inject ProfileServicesReceiver ProfileServicesReceiver
-@inject IHttpContextAccessor HttpContextAccessor
+
 
 <h1>Search</h1>
 
@@ -65,17 +66,19 @@
 @code {
     bool dialogIsOpen = false;
     bool loginWarning = false;
-    bool isLoggedIn = false;
     bool infoDialogIsOpen = false;
     string stockSymbol = string.Empty;
 
     private string SearchValue { get; set; }
     private IList<Stock> stocks { get; set; }
 
+    UserSingleton userSingleton;
+
     protected override void OnInitialized()
     {
         stocks = StockAdapter.GetStocks().ToList();
-        isLoggedIn = HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated;
+
+        userSingleton = UserSingleton.GetUserSingleton();
         UpdateStockFavoritiesList();
     }
 
@@ -87,7 +90,7 @@
 
     private void FavoriteClicked(Stock stock)
     {
-        if (!isLoggedIn)
+        if (!userSingleton.IsUserLogged)
         {
             loginWarning = true;
         }
@@ -131,7 +134,7 @@
 
     private void UpdateStockFavoritiesList()
     {
-        if (isLoggedIn)
+        if (userSingleton.IsUserLogged)
         {
             var userFavorities = ProfileFacade.GetFavoritiesAssets();
 

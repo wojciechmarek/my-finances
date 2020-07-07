@@ -9,6 +9,7 @@ using MyFinances.Database.Facades;
 using Microsoft.AspNetCore.Http;
 using MyFinances.Common.Exceptions;
 using MyFinances.Database.Models;
+using MyFinances.Database.UserInfo;
 
 namespace MyFinances.Database.Services
 {
@@ -16,13 +17,14 @@ namespace MyFinances.Database.Services
     {
         private readonly MyFinancesContext _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private string userIdentifier;
+        private readonly UserSingleton _userSingleton;
 
         public ProfileServices(MyFinancesContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
-            userIdentifier =_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _userSingleton = UserSingleton.GetUserSingleton();
+            _userSingleton.SetContext = httpContextAccessor;
         }
 
         public void AddFavoriteAsset(string assetIdentifier)
@@ -32,7 +34,7 @@ namespace MyFinances.Database.Services
            var newAsset = new FavoriteAsset()
            {
                AssetId = assetIdentifier,
-               UserId = userIdentifier,
+               UserId = _userSingleton.GetUserId,
            };
 
            _context.FavoriteAssets.Add(newAsset);
@@ -44,7 +46,7 @@ namespace MyFinances.Database.Services
             if (assetIdentifier.IsNullOrEmpty()) throw new FavouriteAssetException();
 
             var resultToRemove = _context.FavoriteAssets
-                .Single(x => x.AssetId == assetIdentifier && x.UserId == userIdentifier);
+                .Single(x => x.AssetId == assetIdentifier && x.UserId == _userSingleton.GetUserId);
 
             _context.FavoriteAssets.Remove(resultToRemove);
             _context.SaveChanges();
@@ -53,7 +55,7 @@ namespace MyFinances.Database.Services
         public IList<string> GetFavoritiesAssets()
         {
             var result = _context.FavoriteAssets
-                .Where(x => x.UserId == userIdentifier).Select(x=>x.AssetId).ToList();
+                .Where(x => x.UserId == _userSingleton.GetUserId).Select(x=>x.AssetId).ToList();
 
             return result;
         }
