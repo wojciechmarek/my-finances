@@ -42,8 +42,7 @@ namespace MyFinances.UI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MyFinancesContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("SqlServerConnection")));
+                options.UseInMemoryDatabase("Database"));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<MyFinancesContext>();
             services.AddRazorPages();
