@@ -9,4 +9,4 @@ Easy web application powered by Blazor Server framework developed by Microsoft. 
 
 ⚠ IMPORTANT: This is the easiest implementation of patterns as could be, propably it needs a lot of refactoring and new structure of directories.<br/>
 ❤ THANK YOU: Microsoft for Blazor instead of boring MVC and Razor Pages. Don't screw it up.<br/>
-✔ RUN: Use Visual Studio, it's the easiest way.<br/>
+✔ RUN: Use Visual Studio, it's the easiest way. Install Net Core 3.1 before, or just the newest version<br/>
