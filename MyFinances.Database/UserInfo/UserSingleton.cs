@@ -9,7 +9,7 @@ namespace MyFinances.Database.UserInfo
 {
     public class UserSingleton
     {
-        private static UserSingleton _instace;
+        private static UserSingleton _instance;
 
         private static object _lock = new object();
 
@@ -23,7 +23,7 @@ namespace MyFinances.Database.UserInfo
         {
             lock (_lock)
             {
-                return _instace ?? (_instace = new UserSingleton());
+                return _instance ?? (_instance = new UserSingleton());
             }
         }
 
