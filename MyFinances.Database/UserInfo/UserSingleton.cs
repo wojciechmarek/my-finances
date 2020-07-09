@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using System.Text;
-using IdentityServer4.Extensions;
-using Microsoft.AspNetCore.Http;
+
 
 namespace MyFinances.Database.UserInfo
 {

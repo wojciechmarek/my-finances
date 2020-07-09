@@ -1,12 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using IdentityServer4.Extensions;
 using MyFinances.Database.Context;
 using MyFinances.Database.Facades;
-using Microsoft.AspNetCore.Http;
 using MyFinances.Common.Exceptions;
 using MyFinances.Database.Models;
 using MyFinances.Database.UserInfo;
