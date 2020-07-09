@@ -25,7 +25,7 @@ namespace MyFinances.Database.Services
 
         public void AddFavoriteAsset(string assetIdentifier)
         { 
-           if (assetIdentifier.IsNullOrEmpty()) throw new FavouriteAssetException();
+           if (string.IsNullOrEmpty(assetIdentifier)) throw new FavouriteAssetException();
 
            var newAsset = new FavoriteAsset()
            {
@@ -39,7 +39,7 @@ namespace MyFinances.Database.Services
 
         public void RemoveFavouriteAsset(string assetIdentifier)
         {
-            if (assetIdentifier.IsNullOrEmpty()) throw new FavouriteAssetException();
+            if (string.IsNullOrEmpty(assetIdentifier)) throw new FavouriteAssetException();
 
             var resultToRemove = _context.FavoriteAssets
                 .Single(x => x.AssetId == assetIdentifier && x.UserId == _userSingleton.GetUserId);
