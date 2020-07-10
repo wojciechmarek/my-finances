@@ -1,6 +1,6 @@
 # MyFinances
 
-Simple web application powered by Blazor Server framework developed by Microsoft. App has been created as a part of project for class. Following design patterns have been implemeted (or at least I tried):
+Simple web application powered by Blazor Server framework developed by Microsoft. App has been created as a part of project for class at university. Following design patterns have been implemeted (or at least I tried):
 - Adapter - wraps external fake api
 - Facade - hides database services implemetation
 - Singleton - stores user credentials globally
