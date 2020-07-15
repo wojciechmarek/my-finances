@@ -4,6 +4,7 @@
 @using MyFinances.Common.State
 @using MyFinances.Stock.Adapter
 @using MyFinances.UI.Data.HistoryIntervals
+@using IdentityServer4.Extensions
 @inject StockHistoryContext StockHistoryContext
 @inject IStockAdapter StockAdapter
 
@@ -20,7 +21,7 @@
             <div>
                 @foreach (var price in prices)
                 {
-                    <p>@price.Time.ToShortTimeString(): <b>@price.Price.ToString()</b></p>
+                    <p>@price.Time.ToLocalTime(): <b>@String.Format("{0:f2} zł", price.Price)</b></p>
                 }
             </div>
         </MatDialogContent>
@@ -48,7 +49,7 @@
 
     protected override void OnInitialized()
     {
-        Symbol = "CCC";
+        if (Symbol.IsNullOrEmpty()) Symbol = "CCC";
 
         hourInterval = new HourInterval();
         hourInterval.SetContext(StockAdapter);
@@ -56,6 +57,12 @@
         dayInterval.SetContext(StockAdapter);
 
         DailyPrices();
+    }
+
+    protected override void OnParametersSet()
+    {
+        DailyPrices();
+        base.OnParametersSet();
     }
 
     private void ShowPrices(string interval)
@@ -78,13 +85,12 @@
         StockHistoryContext.SetStockHistoryContext(hourInterval);
         stockHistory = StockHistoryContext.GetStockHistory(Symbol);
 
-        foreach (var stock in stockHistory.Prices)
-        {
-            prices.Clear();
-            prices.Add(new UIStock(DateTime.Now, stock));
-            prices.Add(new UIStock(DateTime.Now.AddHours(-1), stock));
-            prices.Add(new UIStock(DateTime.Now.AddHours(-2), stock));
-        }
+        var stock = stockHistory.Prices;
+
+        prices.Clear();
+        prices.Add(new UIStock(DateTime.Now, stock[0]));
+        prices.Add(new UIStock(DateTime.Now.AddHours(-1), stock[1]));
+        prices.Add(new UIStock(DateTime.Now.AddHours(-2), stock[2]));
     }
 
     private void DailyPrices()
@@ -93,12 +99,11 @@
         StockHistoryContext.SetStockHistoryContext(dayInterval);
         stockHistory = StockHistoryContext.GetStockHistory(Symbol);
 
-        foreach (var stock in stockHistory.Prices)
-        {
-            prices.Clear();
-            prices.Add(new UIStock(DateTime.Now, stock));
-            prices.Add(new UIStock(DateTime.Now.AddDays(-1), stock));
-            prices.Add(new UIStock(DateTime.Now.AddDays(-2), stock));
-        }
+        var stock = stockHistory.Prices;
+
+        prices.Clear();
+        prices.Add(new UIStock(DateTime.Now, stock[0]));
+        prices.Add(new UIStock(DateTime.Now.AddDays(-1), stock[1]));
+        prices.Add(new UIStock(DateTime.Now.AddDays(-2), stock[2]));
     }
 }

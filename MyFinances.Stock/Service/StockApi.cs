@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using MyFinances.Common.Exceptions;
 using MyFinances.Common.Models.Stock;
 
@@ -12,9 +13,11 @@ namespace MyFinances.Stock.Service
     public class StockApi
     {
         private IList<StockModel> _prices;
+        private Random _random;
 
         public StockApi()
         {
+            _random = new Random();
             _prices = new List<StockModel>()
             {
                 new StockModel("Alior", "ALR", 16),
@@ -98,12 +101,14 @@ namespace MyFinances.Stock.Service
 
         private double GenerateFakePrice(double price)
         {
-            Random random = new Random();
+            var minPrice = price - 1d;
+            var maxPrice = price + 1d;
 
-            var minPrice = price - 1;
-            var maxPrice = price + 1;
+            var randNum = _random.NextDouble();
 
-            return random.NextDouble() * ((maxPrice - minPrice) + minPrice);
+            var result = (minPrice + (randNum * (maxPrice - minPrice)));
+
+            return result;
         }
     }
 }
