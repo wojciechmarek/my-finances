@@ -1,10 +1,10 @@
-# MyFinances
+# My Finances
 
 This a simple web application allowing you to see polish stock prices, details about the stock and save single stock in a favorites list.
 
 ## Purpose
 
-MyFinances was created as a part of a project for a class at university. The main aim of the project was to implement as many Software Design Patterns as we can.
+My Finances was created as a part of a project for a class at university. The main aim of the project was to implement as many Software Design Patterns as we can.
 
 Design patterns included:
 
@@ -14,7 +14,7 @@ Design patterns included:
 - Facade - hides database services implementation
 - State - changes the content of the object with details info
 
-## Screenshots:
+## Screenshots
 
 - Main page view:
 
@@ -29,6 +29,7 @@ Design patterns included:
   ![main](https://user-images.githubusercontent.com/27026036/206000672-393edee4-5247-4a82-83d9-af3589fc0c77.png)
 
 ## Used technologies
+
 - Blazor framework ❤️ - server version
 - .Net Core 3.1
 - Visual Studio 2021
@@ -37,6 +38,7 @@ Design patterns included:
 ## Blazor
 
 It a Microsoft's modern framework to build web applications using a popular C# programming language. There are two options given to developers:
+
 - Blazor server - a frontend app uses a real-time communication to the server to process all data on it (communication-based on SignalR library)
 - Blazor WASM - a frontend app is compiled from C# to WebAssembly binary language and runs in a browser like other SPA apps: React or Angular
 
