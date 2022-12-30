@@ -8,11 +8,11 @@ My Finances was created as a part of a project for a class at university. The ma
 
 Design patterns included:
 
-- Adapter - wraps an external fake API
-- Singleton - stores user credentials globally
-- Command - invokes buttons pressed in another place
-- Facade - hides database services implementation
-- State - changes the content of the object with details info
+- **Adapter** - wraps an external fake API
+- **Singleton** - stores user credentials globally
+- **Command** - invokes buttons pressed in another place
+- **Facade** - hides database services implementation
+- **State** - changes the content of the object with details info
 
 ## Screenshots
 
