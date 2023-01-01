@@ -34,6 +34,7 @@ Design patterns included:
 - .Net Core 3.1
 - Visual Studio 2021
 - C# programming language
+- Material Design kit for Blazor
 
 ## Blazor
 
